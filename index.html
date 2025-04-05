@@ -47,29 +47,16 @@
       justify-content: center;
       transition: transform 0.4s ease;
       z-index: 1;
-      perspective: 1000px;
+      transform-style: preserve-3d;
     }
 
-    .rotate {
+    .animate {
       animation: spin 1.8s ease-in-out;
     }
 
     @keyframes spin {
-      0%   { transform: rotateY(0deg); }
-      25%  { transform: rotateY(360deg); }
-      50%  { transform: rotateY(720deg); }
-      75%  { transform: rotateY(1080deg); }
-      100% { transform: rotateY(1440deg); }
-    }
-
-    .carte.glow {
-      animation: glow 0.6s ease-in-out 1;
-    }
-
-    @keyframes glow {
-      0%   { box-shadow: 0 0 10px #a0d0ff; }
-      50%  { box-shadow: 0 0 30px #80c0ff; }
-      100% { box-shadow: 0 0 10px #a0d0ff; }
+      0% { transform: rotateY(0); }
+      100% { transform: rotateY(1080deg); }
     }
 
     button {
@@ -118,7 +105,7 @@
   <script>
     const prenoms = {
       "Ismael": 20, "Lavrin": 15, "Sean": 50, "Lou": 50, "Sarah": 50,
-      "Mohamed": 15, "Tom": 55, "Younes": 40, "Lina": 40, "Mathis": 50,
+      "Mohamed": 15, "Tom": 55, "Younes": 25, "Lina": 40, "Mathis": 50,
       "Leo": 20, "Mathias": 15, "Idriss": 55, "Amir": 15, "Yoann": 15,
       "Ewan": 15, "Sakina": 50, "Sairam": 40, "Steven": 15, "Ruben": 40,
       "Guillaume": 15, "Dorian": 55, "Corentin": 40
@@ -144,26 +131,24 @@
 
     bouton.addEventListener("click", () => {
       bouton.disabled = true;
-      carte.classList.remove("glow");
-      carte.classList.add("rotate");
-      carte.textContent = "🔄";
+      carte.textContent = ""; // cacher le texte pendant la rotation
+      carte.classList.remove("animate");
+      void carte.offsetWidth; // reset animation
+      carte.classList.add("animate");
+
+      const prenom = choisirPrenom();
 
       setTimeout(() => {
-        const prenom = choisirPrenom();
         carte.textContent = prenom;
-        carte.classList.remove("rotate");
-        carte.classList.add("glow");
         explosion.currentTime = 0;
         explosion.play();
         launchFireworks();
-
-        setTimeout(() => {
-          carte.classList.remove("glow");
-          bouton.disabled = false;
-        }, 800);
-      }, 1800); // Durée totale de la rotation
+        launchConfetti();
+        bouton.disabled = false;
+      }, 1800);
     });
 
+    // 🎆 Feux d’artifice
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -211,6 +196,35 @@
       const b = bigint & 255;
       return `${r},${g},${b}`;
     }
+
+    // 🎉 Confettis emojis
+    function launchConfetti() {
+      const emojis = ["🎉", "🎊", "💥", "🔥", "💫"];
+      for (let i = 0; i < 20; i++) {
+        const emoji = document.createElement("div");
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.position = "absolute";
+        emoji.style.left = `${Math.random() * window.innerWidth}px`;
+        emoji.style.top = `${window.innerHeight}px`;
+        emoji.style.fontSize = `${24 + Math.random() * 20}px`;
+        emoji.style.animation = `flyUp ${2 + Math.random()}s ease-out forwards`;
+        emoji.style.pointerEvents = "none";
+        emoji.style.zIndex = "2";
+        document.body.appendChild(emoji);
+
+        setTimeout(() => emoji.remove(), 4000);
+      }
+    }
+
+    // 🎈 animation flyUp
+    const style = document.createElement("style");
+    style.innerHTML = `
+      @keyframes flyUp {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-600px); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 
 </body>
