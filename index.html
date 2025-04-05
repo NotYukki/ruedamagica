@@ -13,7 +13,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #1e1e2f, #3c3b5a, #1e1e2f);
+      background: linear-gradient(-45deg, #ff6ec4, #7873f5, #42e695, #f4f4f4);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
       color: white;
@@ -47,6 +47,19 @@
       justify-content: center;
       transition: transform 0.4s ease;
       z-index: 1;
+      perspective: 1000px;
+    }
+
+    .rotate {
+      animation: spin 1.8s ease-in-out;
+    }
+
+    @keyframes spin {
+      0%   { transform: rotateY(0deg); }
+      25%  { transform: rotateY(360deg); }
+      50%  { transform: rotateY(720deg); }
+      75%  { transform: rotateY(1080deg); }
+      100% { transform: rotateY(1440deg); }
     }
 
     .carte.glow {
@@ -99,16 +112,13 @@
   <div class="carte" id="carte">❓</div>
   <button id="tirerBtn">🔮 Tirar una nombre</button>
 
-  <!-- 💥 Audio de bombe -->
   <audio id="explosionSound" src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3" preload="auto"></audio>
-
-  <!-- 🎆 Canvas pour les feux d’artifice -->
   <canvas id="fireworks"></canvas>
 
   <script>
     const prenoms = {
-      "Ismael": 20, "Lavrin": 50, "Sean": 50, "Lou": 50, "Sarah": 50,
-      "Mohamed": 15, "Tom": 55, "Younes": 25, "Lina": 40, "Mathis": 50,
+      "Ismael": 20, "Lavrin": 30, "Sean": 50, "Lou": 50, "Sarah": 50,
+      "Mohamed": 15, "Tom": 55, "Younes": 40, "Lina": 40, "Mathis": 50,
       "Leo": 20, "Mathias": 15, "Idriss": 55, "Amir": 15, "Yoann": 15,
       "Ewan": 15, "Sakina": 50, "Sairam": 40, "Steven": 15, "Ruben": 40,
       "Guillaume": 15, "Dorian": 55, "Corentin": 40
@@ -134,24 +144,26 @@
 
     bouton.addEventListener("click", () => {
       bouton.disabled = true;
-      carte.textContent = "";
-      carte.style.transform = "scaleX(0)";
+      carte.classList.remove("glow");
+      carte.classList.add("rotate");
+      carte.textContent = "🔄";
+
       setTimeout(() => {
         const prenom = choisirPrenom();
         carte.textContent = prenom;
+        carte.classList.remove("rotate");
         carte.classList.add("glow");
-        carte.style.transform = "scaleX(1)";
         explosion.currentTime = 0;
-        explosion.play(); // 💣 explosion audio
-        launchFireworks(); // 🎆 feux d’artifice
+        explosion.play();
+        launchFireworks();
+
         setTimeout(() => {
           carte.classList.remove("glow");
           bouton.disabled = false;
         }, 800);
-      }, 300);
+      }, 1800); // Durée totale de la rotation
     });
 
-    // 🎇 Feux d’artifice avec Canvas
     const canvas = document.getElementById('fireworks');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -199,26 +211,6 @@
       const b = bigint & 255;
       return `${r},${g},${b}`;
     }
-    function launchEmojis() {
-  const emojis = ["🎉", "🎊", "💥", "🔥", "💫", "🤩", "🎈"];
-  for (let i = 0; i < 20; i++) {
-    const emoji = document.createElement("div");
-    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    emoji.style.position = "absolute";
-    emoji.style.left = `${Math.random() * window.innerWidth}px`;
-    emoji.style.top = `${window.innerHeight}px`;
-    emoji.style.fontSize = `${24 + Math.random() * 20}px`;
-    emoji.style.animation = `flyUp ${2 + Math.random()}s ease-out forwards`;
-    emoji.style.pointerEvents = "none";
-    emoji.style.zIndex = "2";
-    document.body.appendChild(emoji);
-
-    setTimeout(() => {
-      emoji.remove();
-    }, 4000);
-  }
-}
-
   </script>
 
 </body>
