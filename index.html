@@ -97,9 +97,11 @@
 
   <h1>🎴 Mysterio ^^</h1>
   <div class="carte" id="carte">❓</div>
-  <button id="tirerBtn">🔮 Tirar una nombre</button>
+  <button id="tirerBtn">🔮 Tirer un nom</button>
+  <button id="supprimerBtn" disabled>🗑️ Supprimer ce prénom</button>
 
   <audio id="explosionSound" src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3" preload="auto"></audio>
+  <audio id="sonAleatoire" preload="auto"></audio>
   <canvas id="fireworks"></canvas>
 
   <script>
@@ -111,39 +113,73 @@
       "Guillaume": 50, "Dorian": 55, "Corentin": 40
     };
 
+    let pool = genererPool();
+    let dernierPrenom = "";
     const carte = document.getElementById("carte");
     const bouton = document.getElementById("tirerBtn");
     const explosion = document.getElementById("explosionSound");
-    let dernierPrenom = "";
+    const sonAleatoire = document.getElementById("sonAleatoire");
+    const boutonSupprimer = document.getElementById("supprimerBtn");
+
+    // Fichiers audio disponibles
+    const sons = [
+      "1.mp3",
+      "2.mp3",
+      "3.mp3",
+      "4.mp3",
+      "5.mp3",
+      "6.mp3",
+      "7.mp3"
+    ];
+
+    function genererPool() {
+      const nouveauPool = [];
+      for (const [prenom, poids] of Object.entries(prenoms)) {
+        for (let i = 0; i < poids; i++) nouveauPool.push(prenom);
+      }
+      return nouveauPool;
+    }
 
     function choisirPrenom() {
-      const pool = [];
-      for (const [prenom, poids] of Object.entries(prenoms)) {
-        for (let i = 0; i < poids; i++) pool.push(prenom);
+      if (pool.length === 0) {
+        carte.textContent = "🎉 Tous les noms tirés !";
+        bouton.disabled = true;
+        return null;
       }
-      let prenomTire;
+      let index, prenomTire;
       do {
-        prenomTire = pool[Math.floor(Math.random() * pool.length)];
-      } while (prenomTire === dernierPrenom);
+        index = Math.floor(Math.random() * pool.length);
+        prenomTire = pool[index];
+      } while (prenomTire === dernierPrenom && pool.length > 1);
+
+      pool = pool.filter(p => p !== prenomTire);
       dernierPrenom = prenomTire;
       return prenomTire;
     }
 
     bouton.addEventListener("click", () => {
       bouton.disabled = true;
-      carte.textContent = ""; // cacher le texte pendant la rotation
+      carte.textContent = "";
       carte.classList.remove("animate");
-      void carte.offsetWidth; // reset animation
+      void carte.offsetWidth;
       carte.classList.add("animate");
+
+      // 🔊 Choisir un son aléatoire
+      const son = sons[Math.floor(Math.random() * sons.length)];
+      sonAleatoire.src = son;
+      sonAleatoire.play();
 
       const prenom = choisirPrenom();
 
       setTimeout(() => {
-        carte.textContent = prenom;
-        explosion.currentTime = 0;
-        explosion.play();
-        launchFireworks();
-        launchConfetti();
+        if (prenom) {
+          carte.textContent = prenom;
+          explosion.currentTime = 0;
+          explosion.play();
+          launchFireworks();
+          launchConfetti();
+          boutonSupprimer.disabled = false; // Activer le bouton de suppression
+        }
         bouton.disabled = false;
       }, 1800);
     });
@@ -157,7 +193,6 @@
     function launchFireworks() {
       let particles = [];
       const colors = ["#ff4b5c", "#56cfe1", "#f6bd60", "#d0f4de", "#ffc8dd"];
-
       for (let i = 0; i < 40; i++) {
         particles.push({
           x: canvas.width / 2,
@@ -173,7 +208,6 @@
       const interval = setInterval(() => {
         ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
         particles.forEach(p => {
           p.x += Math.cos(p.angle) * p.speed;
           p.y += Math.sin(p.angle) * p.speed;
@@ -183,7 +217,6 @@
           ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${p.alpha})`;
           ctx.fill();
         });
-
         particles = particles.filter(p => p.alpha > 0);
         if (particles.length === 0) clearInterval(interval);
       }, 30);
@@ -216,7 +249,6 @@
       }
     }
 
-    // 🎈 animation flyUp
     const style = document.createElement("style");
     style.innerHTML = `
       @keyframes flyUp {
@@ -225,7 +257,16 @@
       }
     `;
     document.head.appendChild(style);
-  </script>
 
+    // Fonction pour supprimer un prénom
+    boutonSupprimer.addEventListener("click", () => {
+      if (dernierPrenom && prenoms.hasOwnProperty(dernierPrenom)) {
+        delete prenoms[dernierPrenom]; // Supprimer du dictionnaire
+        pool = genererPool(); // Régénérer le pool
+        boutonSupprimer.disabled = true;
+        alert(`❌ ${dernierPrenom} a été supprimé !`);
+      }
+    });
+  </script>
 </body>
 </html>
