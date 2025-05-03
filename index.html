@@ -26,32 +26,32 @@
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 40px;
       margin-bottom: 20px;
-      text-shadow: 1px 1px 4px #000;
-      z-index: 1;
+      text-shadow: 2px 2px 6px #000;
     }
 
     canvas {
+      width: 600px;
+      height: 600px;
       border-radius: 50%;
       background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(6px);
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
     }
 
     button {
-      margin: 10px;
-      padding: 12px 28px;
-      font-size: 16px;
+      margin: 12px;
+      padding: 14px 32px;
+      font-size: 18px;
       font-weight: bold;
       background: linear-gradient(135deg, #00adb5, #007b7f);
       color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      z-index: 1;
     }
 
     button:hover {
@@ -65,17 +65,17 @@
     }
 
     #result {
-      font-size: 28px;
+      font-size: 32px;
       margin-top: 20px;
-      text-shadow: 1px 1px 2px #000;
+      text-shadow: 1px 1px 3px #000;
     }
   </style>
 </head>
 <body>
-  <h1>🎡 Roue de l arnaque</h1>
-  <canvas id="wheel" width="400" height="400"></canvas>
+  <h1>🎡 Roue de l'arnaque</h1>
+  <canvas id="wheel" width="600" height="600"></canvas>
   <div id="result">❓</div>
-  <button id="spinBtn"> Tourner</button>
+  <button id="spinBtn">🎯 Tourner</button>
   <button id="removeBtn" disabled>🗑️ Dehors</button>
 
   <audio id="randomSound" preload="auto"></audio>
@@ -101,6 +101,8 @@
     const randomSound = document.getElementById('randomSound');
     const explosionSound = document.getElementById('explosionSound');
 
+    const center = canvas.width / 2;
+    const radius = center - 20;
     const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#9CCC65', '#FF8A65', '#BA68C8'];
 
     function genererPool() {
@@ -130,23 +132,23 @@
         const angleStart = angleOffset + i * angleParNom;
         const angleEnd = angleStart + angleParNom;
         ctx.beginPath();
-        ctx.moveTo(200, 200);
-        ctx.arc(200, 200, 180, angleStart, angleEnd);
+        ctx.moveTo(center, center);
+        ctx.arc(center, center, radius, angleStart, angleEnd);
         ctx.fillStyle = colors[i % colors.length];
         ctx.fill();
         ctx.save();
-        ctx.translate(200, 200);
+        ctx.translate(center, center);
         ctx.rotate(angleStart + angleParNom / 2);
         ctx.textAlign = "right";
         ctx.fillStyle = "#fff";
-        ctx.font = "16px Arial";
-        ctx.fillText(nom, 160, 5);
+        ctx.font = "18px Arial";
+        ctx.fillText(nom, radius - 20, 8);
         ctx.restore();
       });
     }
 
     function jouerSonAleatoire() {
-      const numero = Math.floor(Math.random() * 24) + 1; // 1 à 10
+      const numero = Math.floor(Math.random() * 24) + 1;
       randomSound.src = `${numero}.mp3`;
       randomSound.play().catch(e => console.warn("Erreur audio :", e));
     }
@@ -168,18 +170,19 @@
       const indexChoisi = nomsVisibles.indexOf(nomChoisi);
       const angleParNom = 2 * Math.PI / nomsVisibles.length;
       const angleCible = (3 * Math.PI / 2) - (indexChoisi * angleParNom + angleParNom / 2);
-      const tours = 5;
+      const tours = 7;
       const angleFinal = tours * 2 * Math.PI + angleCible;
 
       let angle = 0;
       let start = null;
+      const dureeAnimation = 6000;
 
       jouerSonAleatoire();
 
       function animer(timestamp) {
         if (!start) start = timestamp;
-        const progress = (timestamp - start) / 3000;
-        angle = easeOutCubic(progress) * angleFinal;
+        const progress = (timestamp - start) / dureeAnimation;
+        angle = easeOutCubic(Math.min(progress, 1)) * angleFinal;
         dessinerRoue(nomsVisibles, angle);
         if (progress < 1) {
           requestAnimationFrame(animer);
