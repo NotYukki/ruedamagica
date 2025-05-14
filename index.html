@@ -77,6 +77,7 @@
   <div id="result">❓</div>
   <button id="spinBtn">🎯 Tourner</button>
   <button id="removeBtn" disabled>🗑️ Dehors</button>
+  <button id="randomWordBtn">📖 Mot espagnol</button>
 
   <audio id="randomSound" preload="auto"></audio>
   <audio id="explosionSound" src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3" preload="auto"></audio>
@@ -89,6 +90,52 @@
       "Ewan": 20, "Sakina": 20, "Sairam": 20, "Steven": 20, "Ruben": 20,
       "Guillaume": 20, "Dorian": 20, "Corentin": 20
     };
+
+    const motsEspagnols = [
+  "los extranjeros", "soler + inf", "creer en", "una creencia", "mostrar(ue)",
+  "plantearse preguntas", "reflejar", "un reflejo", "a menudo", "dormir la siesta",
+  "las tapas", "bailar", "el baile", "la corrida de toros", "a lo mejor + inf",
+  "el baloncesto", "el deporte", "los molinos de viento", "el AVE", "mejorar",
+  "promover", "atraer", "los turistas", "un dominio", "contradecir", "la innovación",
+  "innovar", "un país de vanguardia", "un torero", "un traje de luces", "una olla exprés",
+  "las zapatos de tacо́n", "un estoque", "una espada", "una montera", "el pintalabios",
+  "original", "tradicional", "moderno", "irónico", "burlо́n/burlona", "provocador",
+  "absurdo", "estupendo", "comprometido", "una cultura", "mezclar", "el origen",
+  "la religión", "costumbres", "sociabilizar", "estar juntos", "acoger", "el respeto",
+  "respetar", "aceptar", "los valores", "la tolerancia", "la igualdad", "ayudar",
+  "las minorías", "el inglés", "un idioma", "una lengua", "una bandera", "una fachada",
+  "los Estados Unidos", "EEUU", "estadounidense", "un mural", "un águila", "una estrella",
+  "un lugar", "adaptar", "expresar", "hispanohablante", "esconder", "una cadena de tele",
+  "un periodista", "tachar", "racista", "los mexicanos", "dirigirse a", "pegar",
+  "dar clases", "proponer", "proceder de", "venir de", "tener que", "deber",
+  "un territorio", "partenecer a", "una raíz", "sufrir", "el sufrimiento", "una tienda",
+  "un negocio", "un acto de odio", "el odio", "odiar", "insultar a alguien",
+  "un supremacista", "discriminar", "cada vez más", "los documentos", "el saber",
+  "sí mismo", "el arte", "las artes", "comprar", "un castillo", "una catedral",
+  "un soldado", "las escaleras", "una película", "una serie", "delante de",
+  "un caballo", "un monje", "la Edad Media", "rodar", "el rodaje", "conquistar",
+  "la paz", "el ruido", "la naturaleza", "un paisaje", "el tesoro", "en cuanto a",
+  "ambos", "un aumento", "aumentar", "el número", "gastar", "desempeñar un papel",
+  "maravillarse", "una maravilla", "formar parte de", "preservar", "los dioses",
+  "indígena", "pertenecer", "el encuentro", "encontrar", "ofrecer", "una ofrenda",
+  "ingenuo", "la ingenuidad", "una calavera", "besar", "abrazar", "un abrazo",
+  "un corazón", "el maíz", "un acontecimiento", "una masacre", "un aniversario",
+  "cumpleaños", "la conquista", "un punto de vista", "oponer", "opuesto",
+  "el imperio", "el emperador", "la explotación", "explotar", "el pueblo indígena",
+  "algunos", "los europeos", "navegar", "la navegación", "el peligro", "peligroso",
+  "los marineros", "una cruz", "el océano", "tener hambre", "bastante", "soñar",
+  "una leyenda", "tener lugar", "cerca", "admirar", "el almirante", "estar decepcionado",
+  "un manatí", "la tripulacion", "desconocer", "una traición", "traicionar",
+  "un asesinato", "asesinar", "un rescate", "el oro", "tomar", "buscar", "matar",
+  "esconder", "un grabado", "la creatividad", "un artista", "el mecenazgo",
+  "una escultura", "pintar", "una obra", "un mensaje", "la propaganda", "el gobierno",
+  "la dictadura", "el ejército", "la meta", "un obrero", "robar", "un ladrón",
+  "el ayuntamiento", "enseñar", "apprendre", "un muralista", "una pared",
+  "deshumanizar", "la deshumanizaciо́n", "recordar", "el apoyo", "difundir",
+  "la herencia", "tomar distancia con", "una herida", "por primera vez",
+  "transmitir", "merecer"
+];
+
 
     let pool = genererPool();
     let dernierPrenom = "";
@@ -212,6 +259,11 @@
         result.textContent = `❌ ${dernierPrenom} supprimé`;
         dessinerRoue(nomsVisibles);
       }
+    });
+
+    document.getElementById("randomWordBtn").addEventListener("click", () => {
+      const mot = motsEspagnols[Math.floor(Math.random() * motsEspagnols.length)];
+      result.textContent = `Traduit sa abruti ${mot}`;
     });
   </script>
 </body>
