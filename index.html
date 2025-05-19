@@ -139,20 +139,33 @@
 
   <script>
     const prenoms = {
-      "Ismael": 20, "Lavrin": 20, "Sean": 20, "Lou": 20, "Sarah": 20,
-      "Mohamed": 20, "Tom": 20, "Younes": 20, "Lina": 20, "Mathis": 20,
-      "Leo": 20, "Mathias": 20, "Idriss": 20, "Amir": 20, "Yoann": 20,
-      "Ewan": 20, "Sakina": 20, "Sairam": 20, "Steven": 20, "Ruben": 20,
-      "Guillaume": 20, "Dorian": 20, "Corentin": 20
+      "Ismael": 10, "Lavrin": 40, "Sean": 20, "Lou": 20, "Sarah": 20,
+      "Mohamed": 10, "Tom": 40, "Younes": 40, "Lina": 20, "Mathis": 20,
+      "Leo": 10, "Mathias": 20, "Idriss": 40, "Amir": 10, "Yoann": 5,
+      "Ewan": 10, "Sakina": 20, "Sairam": 20, "Steven": 20, "Ruben": 20,
+      "Guillaume": 20, "Dorian":40, "Corentin": 20
     };
 
-    const motsEspagnols = [
-      "gato", "perro", "casa", "libro", "sol", "luna", "agua", "fuego", "tierra", "cielo",
-      "amor", "felicidad", "tristeza", "rápido", "lento", "bueno", "malo", "grande", "pequeño", "nuevo",
-      "viejo", "bonito", "feo", "alto", "bajo", "rojo", "azul", "verde", "negro", "blanco",
-      "comer", "beber", "vivir", "morir", "saber", "pensar", "leer", "escribir", "correr", "caminar",
-      "merecer"
-    ];
+    const motsEspagnols = ['los extranjeros', 'soler + inf', 'creer en', 'una creencia', 'mostrar(ue)', 'plantearse preguntas', 'reflejar', 'un reflejo', 'a menudo', 'dormir la siesta', 'las tapas', 
+                           'bailar', 'el baile', 'la corrida de toros', 'a lo mejor + inf', 'el baloncesto', 'el deporte', 'los molinos de viento', 'el AVE', 'mejorar', 'promover', 'atraer', 'los turistas',
+                           'un dominio', 'contradecir', 'la innovación', 'innovar', 'un país de vanguardia', 'un torero', 'un traje de luces', 'una olla exprés', 'las zapatos de tacón', 'un estoque',
+                           'una espada', 'una montera', 'el pintalabios', 'original', 'tradicional', 'moderno', 'irónico', 'burlón/burlona', 'provocador', 'absurdo', 'estupendo', 'comprometido', 'una cultura',
+                           'mezclar', 'el origen', 'la religión', 'costumbres', 'sociabilizar', 'estar juntos', 'acoger', 'el respeto', 'respetar', 'aceptar', 'los valores', 'la tolerancia', 'la igualdad',
+                           'ayudar', 'las minorías', 'el inglés', 'un idioma', 'una bandera', 'una fachada', 'los Estados Unidos', 'estadounidense', 'un mural', 'un águila', 'una estrella', 'un lugar',
+                           'adaptar', 'expresar', 'hispanohablante', 'esconder', 'una cadena de tele', 'un periodista', 'tachar', 'racista', 'los mexicanos', 'dirigirse a', 'pegar', 'dar clases', 'proponer',
+                           'proceder de', 'tener que', 'un territorio', 'partenecer a', 'una raíz', 'sufrir', 'el sufrimiento', 'una tienda', 'un acto de odio', 'el odio', 'odiar', 'insultar a alguien', 
+                           'un supremacista', 'discriminar', 'cada vez más', 'los documentos', 'el saber', 'sí mismo', 'el arte/las artes', 'comprar', 'un castillo', 'una catedral', 'un soldado', 
+                           'las escaleras', 'una película', 'una serie', 'delante de', 'un caballo', 'un monje', 'la Edad Media', 'rodar', 'el rodaje', 'conquistar', 'la paz', 'el ruido', 'la naturaleza',
+                           'un paisaje', 'el tesoro', 'en cuanto a', 'ambos', 'un aumento', 'aumentar', 'el número', 'gastar', 'desempeñar un papel', 'maravillarse', 'una maravilla', 'formar parte de', 
+                           'preservar', 'los dioses', 'indígena', 'pertenecer', 'el encuentro', 'encontrar', 'ofrecer', 'una ofrenda', 'ingenuo', 'la ingenuidad', 'una calavera', 'besar', 'abrazar', 
+                           'un abrazo', 'un corazón', 'el maíz', 'un acontecimiento', 'una masacre', 'un aniversario', 'cumpleaños', 'la conquista', 'un punto de vista', 'oponer', 'opuesto', 'el imperio',
+                           'el emperador', 'la explotación', 'explotar', 'el pueblo indígena', 'algunos', 'los europeos', 'navegar', 'la navegación', 'el peligro', 'peligroso', 'los marineros', 'una cruz',
+                           'el océano', 'tener hambre', 'bastante', 'soñar', 'una leyenda', 'tener lugar', 'cerca', 'admirar', 'el almirante', 'estar decepcionado', 'un manatí', 'la tripulacion', 'desconocer', 
+                           'una traición', 'traicionar', 'un asesinato', 'asesinar', 'un rescate', 'el oro', 'tomar', 'buscar', 'matar', 'esconder', 'un grabado', 'la creatividad', 'un artista', 'el mecenazgo',
+                           'una escultura', 'pintar', 'una obra', 'un mensaje', 'la propaganda', 'el gobierno', 'la dictadura', 'el ejército', 'la meta', 'un obrero', 'robar', 'un ladrón', 'el ayuntamiento',
+                           'enseñar', 'aprender', 'un muralista', 'una pared', 'deshumanizar', 'la deshumanización', 'recordar', 'el apoyo', 'difundir', 'la herencia', 'tomar distancia con', 'una herida', 
+                           'por primera vez', 'transmitir', 'merecer', 'estar considerado','cos(pi/6]','cos(pi/4)','sin(pi)','12²-4²;
+
 
     let pool = genererPool();
     let dernierPrenom = "";
