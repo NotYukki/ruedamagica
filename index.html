@@ -220,7 +220,7 @@
     dessinerRoue(nomsVisibles);
 
     function jouerSonAleatoire() {
-      const numero = Math.floor(Math.random() * 24) + 1;
+      const numero = Math.floor(Math.random() * 29) + 1;
       randomSound.src = `${numero}.mp3`;
       randomSound.play().catch(e => console.warn("Erreur audio :", e));
     }
